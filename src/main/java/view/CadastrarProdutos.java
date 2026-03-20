@@ -34,7 +34,7 @@ public class CadastrarProdutos extends javax.swing.JFrame {
                 d.getQuantidadeProduto()
             };
             model.addRow(linha);
-        }
+        } 
 }
     
     public CadastrarProdutos() {
