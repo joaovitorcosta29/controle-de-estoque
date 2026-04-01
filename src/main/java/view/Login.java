@@ -15,13 +15,13 @@ import model.UsuarioDAO;
  */
 public class Login extends javax.swing.JFrame {
 
-    Conexao conn = new Conexao();
+    //Conexao conn = new Conexao();
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents(); 
-        conn.testarConexao();
+        //conn.testarConexao();
     }
 
     /**
@@ -150,7 +150,7 @@ public class Login extends javax.swing.JFrame {
         
         String currentUser = loginUsuario.getText().trim();
         String currentSenha = loginSenha.getText().trim();
-
+        
         if(currentUser.equals("")){
             JOptionPane.showMessageDialog(null, "Preencha corretamente o campo usuário!!");
             loginUsuario.setText("");
@@ -163,8 +163,8 @@ public class Login extends javax.swing.JFrame {
             UsuarioDAO dao = new UsuarioDAO();
             UsuarioBean usuarioLogado = dao.logar(currentUser, currentSenha);
             if(usuarioLogado.getId() > 0){
-                new Inicio().setVisible(true);
-                this.setVisible(false);
+                new Inicio(usuarioLogado).setVisible(true);
+                this.dispose();
             } else{
                 loginUsuario.setText("");
                 loginSenha.setText("");

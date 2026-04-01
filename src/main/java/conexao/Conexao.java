@@ -14,12 +14,16 @@ import javax.swing.JOptionPane;
  * @author Aluno
  */
 public class Conexao {
+    private static Connection conn = null;
+    
     private static final String url = "jdbc:mysql://localhost:3306/gerenciador";
     private static final String user = "root";
     private static final String senha = "mikolino";
     
-    public static Connection conectar(){
-        Connection conn = null;
+    private Conexao() {
+    }
+    
+    public static synchronized Connection conectar(){
         try {
             conn = DriverManager.getConnection(url, user, senha);
         } catch(SQLException e){

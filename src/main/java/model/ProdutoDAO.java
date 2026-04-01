@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,7 +25,7 @@ public class ProdutoDAO {
             
             stmt = conn.prepareStatement("INSERT INTO produtos (nomeProduto, precoProduto, quantidadeProduto) VALUES(?, ?, ?)");
             stmt.setString(1,produto.getNomeProduto());
-            stmt.setDouble(2,produto.getPrecoProduto());
+            stmt.setDouble(2,produto.getPrecoProduto()); 
             stmt.setInt(3,produto.getQuantidadeProduto());
             stmt.executeUpdate();
             
@@ -32,28 +34,74 @@ public class ProdutoDAO {
         }
         
     }
-    public java.util.List<ProdutoBean> listar() {
-    java.util.List<ProdutoBean> lista = new java.util.ArrayList<>();
+    
+    public void deletarProduto(int id) {
+        try {
+            Connection conn = Conexao.conectar();
+            PreparedStatement stmt = null;
+            
+            stmt = conn.prepareStatement("DELETE FROM produtos WHERE idProduto = ?");
+            stmt.setInt(1, id);
 
-    String sql = "select * from produtos order by idProduto";
-
-    try (Connection conn = Conexao.conectar();
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
-
-        while (rs.next()) {
-            ProdutoBean historico = new ProdutoBean();
-            historico.setIdProduto(rs.getInt("idProduto"));
-            historico.setNomeProduto(rs.getString("NomeProduto"));
-            historico.setPrecoProduto(rs.getDouble("PrecoProduto"));
-            historico.setQuantidadeProduto(rs.getInt("QuantidadeProduto"));
-            lista.add(historico);
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
+    
+    public void editarProduto(ProdutoBean tarefa) {
+        try {
+            // Estabelece conexão com o banco de dados
+            Connection conn = Conexao.conectar();
+            PreparedStatement stmt = null;
+            
+            stmt = conn.prepareStatement("UPDATE produtos SET nomeProduto = ?, precoProduto = ?, quantidadeProduto = ? WHERE idProduto = ?");
+            stmt.setString(1, tarefa.getNomeProduto());
+            stmt.setDouble(2, tarefa.getPrecoProduto());
+            stmt.setInt(3, tarefa.getQuantidadeProduto());
+            stmt.setInt(4, tarefa.getIdProduto());
+            
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public List<ProdutoBean> listarProdutos(){
+        List<ProdutoBean> produtos = new ArrayList();
+        try {
+            // Estabelece conexão com o banco de dados
+            Connection conn = Conexao.conectar();
+            PreparedStatement stmt = null;
+            ResultSet rs = null;
+            
+            stmt = conn.prepareStatement("SELECT * FROM produtos ORDER BY idProduto");
+            
+            rs = stmt.executeQuery();
 
-    return lista;
+            while (rs.next()) {
+                ProdutoBean produto = new ProdutoBean();
+                produto.setIdProduto(rs.getInt("idProduto"));
+                produto.setNomeProduto(rs.getString("nomeProduto"));
+                produto.setPrecoProduto(rs.getDouble("precoProduto"));
+                produto.setQuantidadeProduto(rs.getInt("quantidadeProduto"));
+                
+                produtos.add(produto);
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return produtos;
     }
 }

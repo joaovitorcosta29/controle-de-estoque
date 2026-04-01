@@ -43,6 +43,7 @@ public class Cadastro extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -64,6 +65,12 @@ public class Cadastro extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Senha:");
+
+        senhaCadastro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                senhaCadastroActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Usuário:");
@@ -152,6 +159,7 @@ public class Cadastro extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroActionPerformed
@@ -164,18 +172,22 @@ public class Cadastro extends javax.swing.JFrame {
         if ((nomeCadastro.getText().isEmpty()) || (usuarioCadastro.getText().isEmpty()) || (senhaCadastro.getText().isEmpty())){
             JOptionPane.showMessageDialog(null, "Os campos no CADASTRO NÃO opdem retornar vazios");
         }
+        else if (senhaCadastro.getText().length() < 8) {
+            JOptionPane.showMessageDialog(null, "A senha deve ter pelo menos 8 caracteres!");
+            senhaCadastro.setText("");
+        }
         else {
             UsuarioDAO dao = new UsuarioDAO();
             dao.cadastrar(usuarios);
             JOptionPane.showMessageDialog(null, "Usuário "+ usuarioCadastro.getText()+" inserido com sucesso! ");
-        }
-        nomeCadastro.setText("");
-        usuarioCadastro.setText("");
-        senhaCadastro.setText("");
-
-        new Login().setVisible(true);
-        this.setVisible(false);
         
+            nomeCadastro.setText("");
+            usuarioCadastro.setText("");
+            senhaCadastro.setText("");
+
+            new Login().setVisible(true);
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_botaoCadastroActionPerformed
 
     private void nomeCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeCadastroActionPerformed
@@ -187,6 +199,10 @@ public class Cadastro extends javax.swing.JFrame {
         new Login().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void senhaCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_senhaCadastroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_senhaCadastroActionPerformed
 
     /**
      * @param args the command line arguments

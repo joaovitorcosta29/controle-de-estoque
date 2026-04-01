@@ -4,29 +4,31 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.ProdutoBean;
 import model.ProdutoDAO;
 import model.UsuarioBean;
-import view.CadastrarProdutos;
 
 /**
  *
  * @author Aluno
  */
 public class Inicio extends javax.swing.JFrame {
-    DefaultTableModel model; 
+    DefaultTableModel model;
+    ProdutoDAO deletar = new ProdutoDAO();
+    private UsuarioBean usuarioLogado;
     /**
      * Creates new form Inicio
      */
     
     public void carregarTabelaHistorico() {
-    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabelaHistorico.getModel();
+    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabelaEstoque.getModel();
     model.setRowCount(0);
 
     ProdutoDAO dao = new ProdutoDAO();
     
-    for (ProdutoBean produto : dao.listar()) {
+    for (ProdutoBean produto : dao.listarProdutos()) {
         Object[] linha = {
             produto.getIdProduto(),
             produto.getNomeProduto(),
@@ -36,11 +38,17 @@ public class Inicio extends javax.swing.JFrame {
         model.addRow(linha);
     }
     }
-    
-    public Inicio() {
+    public Inicio(){
         initComponents();
+        carregarTabelaHistorico();
     }
-    
+
+    public Inicio(UsuarioBean usuario) {
+        initComponents();
+        this.usuarioLogado = usuario;  
+        usuarioAtual.setText(usuario.getNome());
+        carregarTabelaHistorico();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,9 +64,10 @@ public class Inicio extends javax.swing.JFrame {
         cadastraProdutos = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
         excluirProdutos2 = new javax.swing.JButton();
+        usuarioAtual = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaHistorico = new javax.swing.JTable();
+        tabelaEstoque = new javax.swing.JTable();
         excluirProdutos3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -96,6 +105,8 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
 
+        usuarioAtual.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -103,25 +114,25 @@ public class Inicio extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(usuarioAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(UsuarioAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(logOut, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(excluirProdutos2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cadastraProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(UsuarioAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(16, 16, 16)
                 .addComponent(UsuarioAtual)
-                .addGap(57, 57, 57)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(usuarioAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addComponent(cadastraProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(excluirProdutos2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 386, Short.MAX_VALUE)
                 .addComponent(logOut, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -129,7 +140,7 @@ public class Inicio extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel3.setText("Produtos em Estoque:");
 
-        tabelaHistorico.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaEstoque.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -145,7 +156,7 @@ public class Inicio extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tabelaHistorico);
+        jScrollPane1.setViewportView(tabelaEstoque);
 
         excluirProdutos3.setBackground(new java.awt.Color(255, 0, 51));
         excluirProdutos3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -203,7 +214,6 @@ public class Inicio extends javax.swing.JFrame {
 
     private void cadastraProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastraProdutosActionPerformed
         // TODO add your handling code here:
-        
         new CadastrarProdutos().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_cadastraProdutosActionPerformed
@@ -217,10 +227,26 @@ public class Inicio extends javax.swing.JFrame {
 
     private void excluirProdutos2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirProdutos2ActionPerformed
         // TODO add your handling code here:
+        new EditarProdutos().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_excluirProdutos2ActionPerformed
 
     private void excluirProdutos3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirProdutos3ActionPerformed
         // TODO add your handling code here:
+        int selectedRow = tabelaEstoque.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um produto para deletar", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int idProduto = (int) tabelaEstoque.getValueAt(selectedRow, 0);
+        int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente deletar este produto?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            deletar.deletarProduto(idProduto);
+            JOptionPane.showMessageDialog(this, "Produto deletado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            carregarTabelaHistorico();
+        }
     }//GEN-LAST:event_excluirProdutos3ActionPerformed
 
     /**
@@ -268,6 +294,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton logOut;
-    private javax.swing.JTable tabelaHistorico;
+    private javax.swing.JTable tabelaEstoque;
+    private javax.swing.JLabel usuarioAtual;
     // End of variables declaration//GEN-END:variables
 }
