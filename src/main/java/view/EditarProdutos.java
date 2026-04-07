@@ -14,24 +14,23 @@ import model.UsuarioLogado;
  * @author joaov
  */
 public class EditarProdutos extends javax.swing.JFrame { 
-    ProdutoDAO editar = new ProdutoDAO();
+    ProdutoDAO editar = new ProdutoDAO();   
     /**
      * Creates new form EditarProdutos
      */
     public EditarProdutos() {
         if(UsuarioLogado.getId() > 0){
             initComponents();
-            carregarTabelaHistorico();
         }
         else{
             new Login().setVisible(true);
             this.dispose();
         }
     }
-
-    public void carregarTabelaHistorico() {
-    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabelaEditar.getModel();
-    model.setRowCount(0);
+    
+        public void carregarTabelaHistorico() {
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tabelaEditar.getModel();
+            model.setRowCount(0);
 
     ProdutoDAO dao = new ProdutoDAO();
     
@@ -221,7 +220,7 @@ public class EditarProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_nomeProduto1ActionPerformed
 
     private void botaoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEditarActionPerformed
-        // TODO add your handling code here:
+
         int selectedRow = tabelaEditar.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Selecione um produto para editar", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -249,8 +248,8 @@ public class EditarProdutos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        new Inicio().setVisible(true);
         this.setVisible(false);
-        carregarTabelaHistorico();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

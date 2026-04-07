@@ -54,7 +54,6 @@ public class CadastrarProdutos extends javax.swing.JFrame {
         voltar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        produtoInserido = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -120,9 +119,6 @@ public class CadastrarProdutos extends javax.swing.JFrame {
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        produtoInserido.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        produtoInserido.setForeground(new java.awt.Color(0, 255, 0));
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -142,12 +138,9 @@ public class CadastrarProdutos extends javax.swing.JFrame {
                             .addComponent(jLabel2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(produtoInserido, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(adicionarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
-                                .addComponent(voltar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(adicionarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(voltar, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(53, 53, 53))
         );
         jPanel1Layout.setVerticalGroup(
@@ -166,9 +159,7 @@ public class CadastrarProdutos extends javax.swing.JFrame {
                 .addComponent(label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(quantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68)
-                .addComponent(produtoInserido)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(adicionarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(voltar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -214,7 +205,7 @@ public class CadastrarProdutos extends javax.swing.JFrame {
             ProdutoDAO dao = new ProdutoDAO();
             dao.inserirProdutos(produtos);
 
-            produtoInserido.setText("Produto adicionado com sucesso!");
+            JOptionPane.showMessageDialog(this, "Produto adicionado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             nomeProduto.setText("");
             precoProduto.setText("");
             quantidadeProduto.setText("");
@@ -236,6 +227,7 @@ public class CadastrarProdutos extends javax.swing.JFrame {
 
     private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
         // TODO add your handling code here:
+        new Inicio().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_voltarActionPerformed
 
@@ -284,7 +276,6 @@ public class CadastrarProdutos extends javax.swing.JFrame {
     private javax.swing.JLabel label;
     private javax.swing.JTextField nomeProduto;
     private javax.swing.JTextField precoProduto;
-    private javax.swing.JLabel produtoInserido;
     private javax.swing.JTextField quantidadeProduto;
     private javax.swing.JButton voltar;
     // End of variables declaration//GEN-END:variables
